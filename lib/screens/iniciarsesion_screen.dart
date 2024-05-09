@@ -9,16 +9,19 @@ import 'package:fz_consultas/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
 class IniciarsesionScreen extends StatelessWidget {
+  const IniciarsesionScreen({super.key});
+
   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: AuthBackground(
         child: SingleChildScrollView(
           child: Column(
             children: [
 
-              const SizedBox(height:260),
+              const SizedBox(height:220),
 
               CardContainer(
                 child: Column(
@@ -53,92 +56,78 @@ class _LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('entro al build de _LoginForm');
     final loginForm = Provider.of<LoginFormProvider>(context);
-    print('entre al build de _LoginForm, llamando a DB...');
     DBProvider dbProvider = Provider.of<DBProvider>(context);
-    return Container(
-      child: Form(
-        key: loginForm.formKey,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        child: Column(
-          children: [
-            TextFormField(
-              autocorrect: false,
-              keyboardType: TextInputType.number,
-              decoration: InputDecorations.authInputDecoration(
-                hintText: '',
-                labelText: 'Numero de Vendedor',
-                prefixIcon: Icons.person
-              ),
-              onChanged: ( value ) => loginForm.usuario = value,
-              validator: ( value ) {
-      
-                    return ( value != null && value.isNotEmpty ) 
-                      ? null
-                      : 'El numero de vendedor es obligatorio';                                    
-                    
-                },
-      
+    return Form(
+      key: loginForm.formKey,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      child: Column(
+        children: [
+          TextFormField(
+            autocorrect: false,
+            keyboardType: TextInputType.number,
+            decoration: InputDecorations.authInputDecoration(
+              hintText: '',
+              labelText: 'Numero de Vendedor',
+              prefixIcon: Icons.person
             ),
-      
-            const SizedBox(height: 30,),
-      
-            TextFormField(
-              autocorrect: false,
-              obscureText: true,
-              keyboardType: TextInputType.visiblePassword,
-              decoration: InputDecorations.authInputDecoration(
-                hintText: '****',
-                labelText: 'Contraseña',
-                prefixIcon: Icons.lock,
-              ),
-              onChanged: ( value ) => loginForm.password = value,
-              validator: ( value ) {
-      
-                    return ( value != null && value.length >= 2 ) 
-                      ? null
-                      : 'La contraseña es obligatoria';                                    
-                    
-                },
-            ),
-            
-            const SizedBox(height: 30,),
-
-            MaterialButton(             
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-              disabledColor: Colors.grey,
-              elevation: 0,
-              color: Colors.orangeAccent,
-              onPressed: loginForm.isLoading ? null : () async {
-                if (!loginForm.isValidForm()) return ;
-                print('abajo de return del if');
-  
-                
-                
-                 
-
-
-                loginForm.isLoading = false;
-
-                await dbProvider.iniciar(context, loginForm.usuario, loginForm.password);
-
-                
-                        
-              },
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-                child: Text(
-                  loginForm.isLoading
-                    ? 'Espere'
-                    : 'Ingresar',
-                  style: const TextStyle(color: Colors.white),
-                  ),
+            onChanged: ( value ) => loginForm.usuario = value,
+            validator: ( value ) {
+    
+                  return ( value != null && value.isNotEmpty ) 
+                    ? null
+                    : 'El numero de vendedor es obligatorio';                                    
                   
-              ) 
-              )
-        ],),
-      ),
+              },
+    
+          ),
+    
+          const SizedBox(height: 30,),
+    
+          TextFormField(
+            autocorrect: false,
+            obscureText: true,
+            keyboardType: TextInputType.visiblePassword,
+            decoration: InputDecorations.authInputDecoration(
+              hintText: '****',
+              labelText: 'Contraseña',
+              prefixIcon: Icons.lock,
+            ),
+            onChanged: ( value ) => loginForm.password = value,
+            validator: ( value ) {
+    
+                  return ( value != null && value.trim().length >= 2 ) 
+                    ? null
+                    : 'La contraseña es obligatoria';                                    
+                  
+              },
+          ),
+          
+          const SizedBox(height: 30,),
+    
+          MaterialButton(             
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            disabledColor: Colors.grey,
+            elevation: 0,
+            color: Colors.orangeAccent,
+            onPressed: loginForm.isLoading ? null : () async {
+              if (!loginForm.isValidForm()) return ;
+              loginForm.isLoading = false;
+    
+              await dbProvider.iniciar(context, loginForm.usuario, loginForm.password);              
+            },
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+              child: Text(
+                loginForm.isLoading
+                  ? 'Espere'
+                  : 'Ingresar',
+                style: const TextStyle(color: Colors.white),
+                ),
+                
+            ) 
+            )
+      ],),
     );
     
   }

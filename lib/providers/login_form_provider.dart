@@ -16,7 +16,6 @@ class LoginFormProvider extends ChangeNotifier {
   }
   
   bool isValidForm(){
-    print(formKey.currentState?.validate());
     //print('aqui entre en ingresar');
     return formKey.currentState?.validate() ?? false;
   }

@@ -74,6 +74,7 @@ class _OrangeBox extends StatelessWidget {
   }
 }
 
+// ignore: unused_element
 class _Bubble extends StatelessWidget {
   const _Bubble();
 
@@ -84,7 +85,7 @@ class _Bubble extends StatelessWidget {
       height: 100,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(100),
-        color: Color.fromARGB(255, 216, 202, 130)
+        color:const Color.fromARGB(255, 216, 202, 130)
       ),
     );
   }

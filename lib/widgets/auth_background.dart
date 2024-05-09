@@ -16,6 +16,7 @@ class AuthBackground extends StatelessWidget {
           const _GreenBox(),
           const _HeaderIcon(),
           const _BottomIcon(),
+          
           child,
         ],
       ),
@@ -39,21 +40,20 @@ class _HeaderIcon extends StatelessWidget {
 }
 class _BottomIcon extends StatelessWidget {
   const _BottomIcon();
+
   @override
-  
   Widget build(BuildContext context) {
-    double opacidad = 0.8;
-    return SafeArea(
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 0), // Ajusta el espacio entre la imagen y el borde inferior
       child: Container(
         width: double.infinity,
-        margin: const EdgeInsets.only(top:564),
-        
-        child: Opacity(
-          opacity: opacidad,
-          child:Image.asset('assets/uniport2.jpg', scale: 2,),
-          )
+        alignment: Alignment.bottomCenter, // Alinea la imagen en la parte inferior del contenedor
+        child: Image.asset(
+          'assets/uniport2.jpg',
+          fit: BoxFit.cover, // Ajusta la imagen para que cubra todo el contenedor
         ),
-      );    
+      ),
+    );
   }
 }
 
@@ -86,8 +86,8 @@ class _GreenBox extends StatelessWidget {
     return const BoxDecoration(
       gradient: LinearGradient(
         colors: [
-          Color.fromRGBO(244, 246, 244, 1),
-          Color.fromRGBO(244, 246, 244, 1),
+          Color.fromARGB(255, 255, 255, 255),
+          Colors.white,
         ]
       )
     );

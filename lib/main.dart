@@ -16,7 +16,7 @@ void main() async{
         ChangeNotifierProvider(create: (_) => LoginFormProvider()),
         // Otros providers que puedas tener
       ],
-      child: MyApp(),
+      child: const MyApp(),
     ),
   );
   }
@@ -34,9 +34,9 @@ class MyApp extends StatelessWidget {
       //home: const IniciarsesionScreen(),
       initialRoute: 'iniciarsesion',
       routes:{
-        'iniciarsesion': (BuildContext context) => IniciarsesionScreen(),
-        'consulta'     : (BuildContext context) => ConsultaScreen(),
-        'respuesta'    : (BuildContext context) => RespuestaForm(resultados: [], currentIndex: 0, busquedaText: '',),
+        'iniciarsesion': (BuildContext context) => const IniciarsesionScreen(),
+        'consulta'     : (BuildContext context) => const ConsultaScreen(),
+        'respuesta'    : (BuildContext context) => const RespuestaForm(resultados: [], currentIndex: 0, busquedaText: '',),
       },
       theme: ThemeData.light().copyWith(
         scaffoldBackgroundColor: Colors.grey[300]

@@ -10,7 +10,7 @@ class InputcDecorations {
     return InputDecoration(
                 enabledBorder: const UnderlineInputBorder(
                   borderSide: BorderSide(
-                    color:Colors.orangeAccent
+                    color:Colors.orangeAccent,
                   ),
                 ),
                 focusedBorder: const UnderlineInputBorder(

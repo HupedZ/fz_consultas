@@ -1,14 +1,30 @@
 
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class ConsultaFormProvider extends ChangeNotifier {
 
-
   GlobalKey<FormState> cformKey = GlobalKey<FormState>();
-
+  var codigoBarra = '';
+  var time = DateTime.now();
+  String valorDelTextFormField = '';
   String referencia = '';
   String codigo = '';
+  String ubicacion = '';
+  String conteo = '';
+  String _opcionSeleccionada = 'Referencia';
+
+  String get opcionSeleccionada => _opcionSeleccionada;
+
+
+
+  
+
+  setOpcionSeleccionada(String value) {
+    _opcionSeleccionada = value;
+    notifyListeners();
+  }
  
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -34,7 +50,6 @@ class ConsultaFormProvider extends ChangeNotifier {
   }
 
   bool isValidForm(){
-    print(cformKey.currentState?.validate());
     //print('aqui entre en ingresar');
     return cformKey.currentState?.validate() ?? false;
   }
