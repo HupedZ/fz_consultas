@@ -324,7 +324,8 @@ class _RespuestaForm extends StatelessWidget {
                                       Get.snackbar('Cancelado', 'Lectura Cancelada');
                                     }else{
                                       
-                                      codigoBactualizado = barcodeScanRes;
+                                       codigoBactualizado = processBarcode(barcodeScanRes);
+                                       
                                       
                                       try{
                                         
@@ -747,4 +748,10 @@ class _RespuestaForm extends StatelessWidget {
     return decodedData['secure_url'];
 
   }
+  String processBarcode(String barcode) {
+  if (barcode.startsWith(']C1')) {
+    return barcode.substring(3);
+  }
+  return barcode;
+}
 }

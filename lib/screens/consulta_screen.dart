@@ -238,7 +238,7 @@ class _ConsultaForm extends StatelessWidget  {
       if(barcodeScanRes == -1){
         Get.snackbar('Cancelado', 'Lectura Cancelada');
       }else{
-        codigoBarra = barcodeScanRes;
+        codigoBarra = processBarcode(barcodeScanRes);
         try{
         DBProvider dbProvider = DBProvider();
         await dbProvider.consultarB(context, codigoBarra, codigoBarra); 
@@ -254,5 +254,11 @@ class _ConsultaForm extends StatelessWidget  {
       }
       
   }
+  String processBarcode(String barcode) {
+  if (barcode.startsWith(']C1')) {
+    return barcode.substring(3);
+  }
+  return barcode;
+}
 }
 
