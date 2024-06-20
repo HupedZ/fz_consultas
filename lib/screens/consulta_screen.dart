@@ -79,15 +79,15 @@ class _ConsultaForm extends StatelessWidget  {
       key: consultaForm.cformKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       child: Column(
-        children: [
-        /* IconButton (
+        children: [ 
+        IconButton (
                onPressed: () async{    
                   await escanearCodigosdeBarra(context);
                   
                },
                 icon: Icon(Icons.barcode_reader, color:Colors.orange)
               
-            ),*/
+            ),
           // DropdownButton para seleccionar la opción
           TextFormField(
             autocorrect: false,
@@ -242,12 +242,6 @@ class _ConsultaForm extends StatelessWidget  {
         try{
         DBProvider dbProvider = DBProvider();
         await dbProvider.consultarB(context, codigoBarra, codigoBarra); 
-        ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-        content: Text(codigoBarra),
-        backgroundColor: Colors.green, // Puedes personalizar el color de fondo.
-        ),
-        );
         }catch(e){
           print(e);
           ScaffoldMessenger.of(context).showSnackBar(

@@ -13,6 +13,7 @@ class ConsultaFormProvider extends ChangeNotifier {
   String codigo = '';
   String ubicacion = '';
   String conteo = '';
+  String nCodigoB = '';
   String _opcionSeleccionada = 'Referencia';
 
   String get opcionSeleccionada => _opcionSeleccionada;

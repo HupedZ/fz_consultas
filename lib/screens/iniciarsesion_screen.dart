@@ -112,9 +112,8 @@ class _LoginForm extends StatelessWidget {
             color: Colors.orangeAccent,
             onPressed: loginForm.isLoading ? null : () async {
               if (!loginForm.isValidForm()) return ;
-              loginForm.isLoading = false;
-    
-              await dbProvider.iniciar(context, loginForm.usuario, loginForm.password);              
+              loginForm.isLoading = false;       
+              await dbProvider.iniciar(context, loginForm.usuario, loginForm.password);             
             },
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),

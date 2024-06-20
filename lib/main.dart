@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fz_consultas/postgre/conection_database.dart';
 import 'package:fz_consultas/providers/consulta_form_provider.dart';
 import 'package:fz_consultas/providers/login_form_provider.dart';
+import 'package:fz_consultas/screens/bienvenida_screen.dart';
 import 'package:fz_consultas/screens/consulta_screen.dart';
 import 'package:fz_consultas/screens/iniciarsesion_screen.dart';
 import 'package:fz_consultas/screens/respuesta_screen.dart';
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
       initialRoute: 'iniciarsesion',
       routes:{
         'iniciarsesion': (BuildContext context) => const IniciarsesionScreen(),
+        'bienvenida': (BuildContext context) =>  WelcomeScreen(username: '',),
         'consulta'     : (BuildContext context) => const ConsultaScreen(),
         'respuesta'    : (BuildContext context) => const RespuestaForm(resultados: [], currentIndex: 0, busquedaText: '',),
       },

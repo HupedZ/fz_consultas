@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:fz_consultas/screens/bienvenida_screen.dart';
 import 'package:fz_consultas/screens/respuesta_screen.dart';
 import 'package:postgres/postgres.dart';
 
@@ -17,13 +18,15 @@ class ResultadoBusqueda {
   final String code;
   final String refe;
   final String articulo;
-  final double stock;
+  double stock;
   final int stockd;
   final double precioc;
   final double precio;
   final String ubica;
   final String? imgurl;
-  final String? codigoB;
+  String? codigoB;
+  String? codigoBactualizado;
+
 
   ResultadoBusqueda({
     required this.ubica,
@@ -35,7 +38,7 @@ class ResultadoBusqueda {
     required this.precioc,
     required this.precio,
     required this.imgurl,
-    required this.codigoB
+    required this.codigoB,
   });
 }
 
@@ -44,28 +47,42 @@ class DBProvider extends ChangeNotifier{
   final Completer<void> _primaryCompleter = Completer<void>();
   Completer<void>? _secondaryCompleter;*/
   
-Future<void> iniciar(BuildContext context, String usuario, String password) async {   
   
-  final conn = await _connect();
+  Future<void> iniciar(BuildContext context, String usuario, String password) async {
+    final conn = await _connect();
 
-  try {
+    try {
       await conn.open();
       final results1 = await conn.query(
         'SELECT * FROM vendedor WHERE vdd_codigo = @nombre AND vdd_clave = @contrasena',
         substitutionValues: {'nombre': usuario, 'contrasena': password},
       );
-      
+
       if (results1.isNotEmpty) {
+        final username = (results1[0][1] as String).trim(); // Asume que el nombre está en la segunda columna
+
+        // Navegar a la pantalla de bienvenida
         // ignore: use_build_context_synchronously
-        Navigator.pushReplacementNamed(context, 'consulta');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => WelcomeScreen(username: username)),
+        );
+      } else {
+        // Mostrar un mensaje de error si la autenticación falla
+        // ignore: use_build_context_synchronously
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Codigo de Vendedor o Contraseña incorrectas'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     } finally {
       await conn.close();
       notifyListeners();
-      //_complete();
-    }  
-  
-}
+    }
+  }
+
 Future<List<ResultadoBusqueda>> consultarR(BuildContext context, String referencia, String valorDelTextFormField) async {
     final conn = await _connect();
     List<ResultadoBusqueda> resultados = [];
@@ -220,7 +237,7 @@ Future<List<ResultadoBusqueda>> consultarB(BuildContext context, String codigoBa
       await conn.open();
 
       final results = await conn.query(
-        'SELECT art_codigo, art_descri, art_barra, art_cospro, art_preven, art_unidad, sto_cantid, sto_deposi, art_ubica, art_imagen, art_codbar FROM articulo, stock WHERE sto_articu = art_codigo and art_codbar = @codigoBarra',
+        'SELECT art_codigo, art_descri, art_barra, art_cospro, art_preven, art_unidad, sto_cantid, sto_deposi, art_ubica, art_imagen, art_codbar FROM articulo, stock WHERE sto_articu = art_codigo and art_codbar = @codigobarra',
         substitutionValues: {'codigobarra': codigoBarra},
       );
 
@@ -249,7 +266,7 @@ Future<List<ResultadoBusqueda>> consultarB(BuildContext context, String codigoBa
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-        content: Text('¡Codigo Invalido!'),
+        content: Text('¡Codigo de Barra Invalido!'),
         backgroundColor: Colors.red, // Puedes personalizar el color de fondo.
         ),
         );
@@ -277,6 +294,21 @@ Future<void> eliminarImagen(String codigo) async {
     await conn.execute(
       'DELETE FROM imagenes WHERE img_articu = @codigo',
       substitutionValues: {'codigo': codigo},
+    );
+  }finally {
+    await conn.close();
+  }
+}
+Future<void> eliminarCodigoB(String codigo) async {
+  final conn = await _connect();
+  String blanco = '';
+  try {
+    await conn.open();
+
+    // Actualizar el campo de imagen en la tabla de artículos
+    await conn.execute(
+      'UPDATE articulo SET art_codbar = @blanco WHERE art_codigo = @codigo',
+      substitutionValues: {'codigo': codigo, 'blanco' : blanco},
     );
   }finally {
     await conn.close();
@@ -315,6 +347,24 @@ Future<void> actualizarRegistro(String nuevoImageUrl, String codigo) async {
       'INSERT INTO imagenes (img_articu, img_url) VALUES (@codigo, @imageUrl)',
       substitutionValues: {'imageUrl': nuevoImageUrl, 'codigo': codigo},
     );
+  } finally {
+    await conn.close();
+  }
+  
+
+}
+Future<void> actualizarCodigoB(String codigoBarra, String codigo) async {
+  final conn = await _connect();
+
+  try {
+    await conn.open();
+
+    // Actualizar el campo de imagen en la primera tabla
+    await conn.execute(
+      'UPDATE articulo SET art_codbar = @codigobarra WHERE art_codigo = @codigo',
+      substitutionValues: {'codigobarra': codigoBarra, 'codigo': codigo},
+    );
+  
   } finally {
     await conn.close();
   }

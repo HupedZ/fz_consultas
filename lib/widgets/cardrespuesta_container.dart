@@ -15,7 +15,7 @@ class CardRContainer extends StatelessWidget {
       padding: EdgeInsets.symmetric( horizontal: 10 ),
       child: Container(
           width: double.infinity,
-          padding: EdgeInsets.all( 15 ),
+          padding: EdgeInsets.all( 5 ),
           decoration: _createCardShape(),
           
           child: child,
